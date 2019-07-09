@@ -26,8 +26,13 @@
 
 #include "util.hpp"
 
+static u32* socketBuffer;
+
 void servicesExit(void)
 {
+    ftp_exit();
+    // free(socketBuffer);
+    socExit();
     Gui::exit();
     pxiDevExit();
     Archive::exit();
@@ -69,6 +74,16 @@ Result servicesInit(void)
     // while (aptMainLoop() && !(hidKeysDown() & KEY_START)) { hidScanInput(); }
 
     Configuration::getInstance();
+
+    socketBuffer = (u32*)memalign(0x1000, 0x100000);
+    bool socinit = socketBuffer != NULL && socInit(socketBuffer, 0x100000) == 0;
+    if (socinit)
+    {
+        if (R_SUCCEEDED(ftp_init())) {
+            g_shouldExitNetworkLoop = false;
+            g_ftpAvailable = true;
+        }
+    }
 
     return 0;
 }

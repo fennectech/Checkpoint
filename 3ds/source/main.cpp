@@ -57,6 +57,8 @@ int main()
         g_screen->doUpdate(&touch);
     }
 
+    g_shouldExitNetworkLoop = true;
+
     Threads::destroy();
     servicesExit();
 }

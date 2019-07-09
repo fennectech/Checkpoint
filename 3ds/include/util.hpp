@@ -36,8 +36,10 @@
 #include <map>
 #include <queue>
 #include <sys/stat.h>
+#include <malloc.h>
 
 extern "C" {
+#include "ftp.h"
 #include "sha256.h"
 }
 
